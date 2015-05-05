@@ -10,18 +10,26 @@ angular.module('myApp', ['ionic'])
     .state('all', {
             url: '/all',
             templateUrl: 'all.html',
-            controller: 'AllCameraController as AllCtrl'
+            controller: 'AllCameraController as AllCtrl',
+            cache: false
     })
-    .state('single', {
-        url: '/single',
+    .state('camera', {
+        url: 'camera/:cam',
         templateUrl: 'single.html',
-        controller: 'SingleCameraController as SingleCtrl'
+        controller: 'SingleCameraController as CamCtrl',
+        cache: false,
+        resolve: {
+            cam: function($stateParams, CameraService) {
+                return CameraService.getCamera($stateParams.cam)
+            }
+        }
      })
     .state('settings', {
         url: '/settings',
         templateUrl: 'settings.html',
         controller: 'SettingsController as SettingsCtrl'
     });
+
     $urlRouterProvider.otherwise("/all");
 })
 
