@@ -1,26 +1,21 @@
 <ion-view view-title="All Cameras">
     <ion-nav-buttons side="secondary">
         <a class="button button-icon ion-refresh" ng-click="reload()"></a>
-        <a class="button button-icon ion-settings" href="#/settings"></a>
+        <a class="button button-icon ion-settings" ui-sref="settings"></a>
     </ion-nav-buttons>
     <ion-content>
-        <div class="card" ng-repeat="camera in cameras">
-            <a class="item assertive" ng-href="#/camera/{{$index}}">
-                {{camera.title}}
-            </a>
-            <div class="item item-image" ng-click="openCamera($index)">
-                <img ng-src="{{camera.url()}}" />
-            </div>
+        <div class="row cameras">
+            <div class="col col-50" ng-repeat="camera in cameras" ng-click="openCamera($index)">
+                <img ng-src="{{getCameraUrl(camera)}}" />
+            <div>
         </div>
     </ion-content>
 </ion-view>
 
 <style type="text/css">
-.camera  {
-    /*background: #fff url('img/loading.gif') no-repeat center center;*/
-    /*background-size: 20%;*/
-    min-height:200px;
-    width:100%;
-    vertical-align: middle;
+.cameras  {
+   -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
 }
+.cameras img { width: 100%;}
 </style>

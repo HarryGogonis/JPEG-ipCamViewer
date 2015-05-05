@@ -1,6 +1,6 @@
 angular.module('myApp')
 
-.controller('AllCameraController', function($scope, $state, CameraService) {
+.controller('AllCameraController', function($scope, $state, $timeout, CameraService) {
     //TODO move to factory
     $scope.cameras = CameraService.cameras;
 
@@ -11,27 +11,30 @@ angular.module('myApp')
 
     $scope.reload = function()
     {   
-        // Reload page
-        $state.transitionTo($state.current, $state.$current.params,
-            { reload: true, inherit: true, notify: true });//reload
+        $timeout(function(){
+            $scope.getCameraUrl = function(camera) {
+                return CameraService.getCameraUrl(camera) + '&t=' + new Date().getTime();
+            };
+        },100);
     };
+    $scope.reload();
 
 })
 
-.controller('SingleCameraController', function($scope, $stateParams, $interval, $timeout, CameraService) {
+.controller('SingleCameraController', function($scope, $stateParams, $timeout, CameraService) {
  //TODO move to factory
     $scope.camera  = CameraService.getCamera($stateParams.cam); 
     var url =  CameraService.getCameraUrl($scope.camera);
+    $scope.url = url;
 
     $scope.updateUrl = function(){
         $scope.url = url + '&t=' + new Date().getTime();
-        console.log($scope.url)
         timeout = $timeout($scope.updateUrl,1000);
     }
     var timeout = $timeout($scope.updateUrl,1000);
 
 })
 
-.controller('SettingsController', function($scope) {
-
+.controller('SettingsController', function($scope, CameraService) {
+    $scope.cameras = CameraService.cameras;
 })

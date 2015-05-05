@@ -1,4 +1,28 @@
 <ion-view view-title="Settings">
     <ion-content>
+    	<div class="list">
+  			<div class="item item-divider">
+    		General
+  			</div>
+
+  			<div class="item" href="#">
+    		Test
+  			</div>
+
+  			<div class="item item-divider">
+  				Cameras
+  			</div>
+
+  			<a class="item" href ng-repeat="camera in cameras">
+  			{{camera.title}}
+  			</a>
+
+  			<a class="item item-icon-left assertive" href>
+  			    <i class="icon ion-plus"></i>
+  				Add Camera
+  			</a>
+
+ 
+		</div>
     </ion-content>
 </ion-view>
