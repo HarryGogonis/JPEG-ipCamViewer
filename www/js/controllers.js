@@ -3,22 +3,24 @@ angular.module('myApp')
 .controller('AllCameraController', function($scope, $state, $timeout, CameraService) {
     //TODO move to factory
     $scope.cameras = CameraService.cameras;
+    $scope.getCameraUrl = CameraService.getCameraUrl;
 
     $scope.openCamera = function(id)
     {
         $state.transitionTo('camera', {cam: id});
     };
 
+    // Reload the image on all cameras
     $scope.reload = function()
     {   
+        $timeout.cancel();
         $timeout(function(){
+            //$scope.cameras = CameraService.cameras;
             $scope.getCameraUrl = function(camera) {
                 return CameraService.getCameraUrl(camera) + '&t=' + new Date().getTime();
             };
-        },100);
+        });
     };
-    $scope.reload();
-
 })
 
 .controller('SingleCameraController', function($scope, $stateParams, $timeout, CameraService) {
@@ -32,6 +34,10 @@ angular.module('myApp')
         timeout = $timeout($scope.updateUrl,1000);
     }
     var timeout = $timeout($scope.updateUrl,1000);
+
+    $scope.$on("$destroy", function(event) {
+        $timeout.cancel( timeout );
+    });
 
 })
 
