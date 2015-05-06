@@ -1,8 +1,7 @@
 angular.module('myApp')
-
 .controller('AllCameraController', function($scope, $state, $timeout, CameraService) {
     //TODO move to factory
-    $scope.cameras = CameraService.cameras;
+    $scope.cameras = CameraService.getAllCamera();
     $scope.getCameraUrl = CameraService.getCameraUrl;
 
     $scope.openCamera = function(id)
@@ -41,6 +40,103 @@ angular.module('myApp')
 
 })
 
-.controller('SettingsController', function($scope, CameraService) {
-    $scope.cameras = CameraService.cameras;
+.controller('SettingsController', function($scope, $ionicModal, $ionicPopup, CameraService) {
+    $scope.cameras = CameraService.read();
+
+    var newCamera;
+    var oldCamera = {};
+
+    // Create modal from template
+    $ionicModal.fromTemplateUrl('edit-camera.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.modal = modal;
+    });
+
+    $scope.openModal = function(camera) {
+       if (camera) {
+            oldCamera = camera;
+            $scope.data = angular.copy(camera);
+            newCamera = false;
+        } else {
+            $scope.data = {};
+            newCamera = true;
+        }
+        $scope.modal.isOpen = true;
+        $scope.modal.show();
+    };
+
+    $scope.closeModal = function() {
+        $scope.modal.hide();
+        $scope.modal.isOpen = false;
+    };
+
+    $scope.saveCamera = function() {
+        var camera = $scope.data;
+        if (camera) {
+            if (newCamera) {
+                CameraService.insertCamera(camera);
+            } else {
+                CameraService.updateCamera(oldCamera, camera);
+            }
+        }
+        $scope.cameras = CameraService.read();
+        $scope.closeModal();
+    }
+
+    $scope.deleteCamera = function() {
+        console.log(newCamera);
+        console.log($scope.data);
+        if (!newCamera && $scope.data) {
+            CameraService.deleteCamera($scope.data);
+        }
+        $scope.cameras = CameraService.read();
+        $scope.closeModal();
+    }
+
+    $scope.isEditing = function() {
+        return !newCamera;
+    }
+
+    //Cleanup the modal when done
+    $scope.$on('$destroy', function() {
+        $scope.modal.remove();
+    });
+    // Execute action on hide modal
+    $scope.$on('modal.hidden', function() {
+        // Execute action
+    });
+    // Execute action on remove modal
+    $scope.$on('modal.removed', function() {
+        // Execute action
+    });
+
+    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        if ($scope.modal.isOpen) {
+            $ionicPopup.confirm({
+                title: 'Save Settings?',
+                template: 'Do you want to save the camera settings?',
+                buttons: [
+                    { text: 'Cancel' },
+                    {
+                        text: 'Save',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            $scope.closeModal();
+                            // save data
+                        }
+                    },
+                    {
+                        text: 'Quit',
+                        type: 'button-assertive',
+                        onTap: function(e) {
+                            $scope.closeModal();
+                        }
+                    },
+                ]
+            });
+            event.preventDefault();
+        }
+    });
 })

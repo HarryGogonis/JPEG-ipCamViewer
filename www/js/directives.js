@@ -50,6 +50,8 @@ angular.module('myApp')
                 } else {
                     element.html('<span>Camera not found</span>');
                 }
+            }, function(error) { 
+                element.html('<span>Error connecting to camera</span>')
             });
         }, true);
       }

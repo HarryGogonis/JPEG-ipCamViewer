@@ -33,7 +33,8 @@ angular.module('myApp', ['ionic'])
     $urlRouterProvider.otherwise("/all");
 })
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, CameraService) {
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -43,5 +44,8 @@ angular.module('myApp', ['ionic'])
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+    
   });
+
+  CameraService.read();
 })

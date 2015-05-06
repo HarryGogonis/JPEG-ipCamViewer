@@ -5,7 +5,7 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="row cameras">
-            <div class="col col-50" ng-repeat="camera in cameras" ng-click="openCamera($index)">
+            <div class="col col-50" ng-repeat="(key, camera) in cameras" ng-click="openCamera($index)">
                 <img ng-src="{{getCameraUrl(camera)}}" />
             <div>
         </div>
@@ -17,5 +17,10 @@
    -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
 }
-.cameras img { width: 100%;}
+
+.cameras img {
+    width: 100%;
+    background: #888;
+    min-height: 200px;
+}
 </style>

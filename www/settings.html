@@ -13,16 +13,22 @@
   				Cameras
   			</div>
 
-  			<a class="item" href ng-repeat="camera in cameras">
+  			<a class="item" href ng-repeat="camera in cameras" ng-click="openModal(camera)">
   			{{camera.title}}
   			</a>
 
-  			<a class="item item-icon-left assertive" href>
-  			    <i class="icon ion-plus"></i>
-  				Add Camera
+  			<a href class="item item-icon-right positive" ng-click="openModal()">
+ 				Add New Camera
+ 				<i class="icon ion-plus-circled"></i>
   			</a>
-
  
 		</div>
     </ion-content>
 </ion-view>
+
+<style>
+.item-select select:disabled {
+    color: #888;
+}
+
+</style>
