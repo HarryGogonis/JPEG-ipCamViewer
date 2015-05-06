@@ -1,6 +1,6 @@
 <ion-modal-view>
 	<ion-header-bar class="bar-stable">
-		<h1 class="title">New Camera</h1>
+		<h1 class="title">{{data.title || 'New camera'}}</h1>
 	</ion-header-bar>
 	<ion-content>
     	<div class="list">
@@ -11,8 +11,6 @@
 
 			<div class="item item-toggle">
 				Use Custom URL
-				<h6>Use this if your manufactuer is not listed, or you wish to specify a
-					custom camera url</h6>
      			<label class="toggle toggle-positive">
 					<input type="checkbox" ng-model="data.use_custom">
 						<div class="track">
@@ -24,7 +22,7 @@
 			<div ng-hide="data.use_custom">
 				<label class="item item-input item-stacked-label">
 					<span class="input-label">Host</span>
-					<input type="text" placeholder="192.168.1.50" ng-model="data.host">
+					<input type="number" placeholder="192.168.1.50" ng-model="data.host">
 				</label>
 
 				<label class="item item-input item-stacked-label">
@@ -63,14 +61,16 @@
 						ng-click="saveCamera()">
   					Save
 				</button>
-				<button class="button button-stable"
-						ng-click="closeModal()">
-  					Cancel
-				</button>
+				
 				<button class="button button-assertive"
 						ng-click="deleteCamera()"
 						ng-show="isEditing()">
   					Delete
+				</button>
+
+				<button class="button button-stable"
+						ng-click="closeModal()">
+  					Cancel
 				</button>
 			</div>
 		</div>
