@@ -73,6 +73,8 @@ angular.module('myApp')
     };
 
     $scope.saveCamera = function() {
+        //TODO check for null values, 
+        // Add default camera title
         var camera = $scope.data;
         if (camera) {
             if (newCamera) {
@@ -114,28 +116,6 @@ angular.module('myApp')
 
     $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
         if ($scope.modal.isOpen) {
-            $ionicPopup.confirm({
-                title: 'Save Settings?',
-                template: 'Do you want to save the camera settings?',
-                buttons: [
-                    { text: 'Cancel' },
-                    {
-                        text: 'Save',
-                        type: 'button-positive',
-                        onTap: function(e) {
-                            $scope.closeModal();
-                            // save data
-                        }
-                    },
-                    {
-                        text: 'Quit',
-                        type: 'button-assertive',
-                        onTap: function(e) {
-                            $scope.closeModal();
-                        }
-                    },
-                ]
-            });
             event.preventDefault();
         }
     });
