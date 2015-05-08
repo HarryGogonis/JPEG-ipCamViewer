@@ -46,7 +46,7 @@
 					</div>
 					<select ng-model="data.manf">
 						<option value="">Select manufacturer</option>
-						<option value="Foscam">Foscam</option>
+						<option ng-repeat="manf in getCameraManf">{{manf}}</option>
 					</select>
 				</label>
 
@@ -56,6 +56,7 @@
 					</div>
 					<select ng-model="data.model">
 						<option value="">Select a model</option>
+						<option ng-repeat="model in getCameraModel(data.manf)">{{model}}</option>
 					</select>
 				</label>
 			</div>
@@ -65,6 +66,22 @@
 					<input type="text" placeholder="http://192.168.1.200:8080/snapshot.cgi?user=admin&password=admin"
 						 ng-model="data.custom_url">
 			</label>
+
+			<div class="item item-icon-right">
+				<button class="button icon-right button-stable"
+						ng-click="testCamera()">
+  						Test connection 
+				</button>
+				<div class="check-connection">
+					<i class="icon">
+					  <ion-spinner ng-show="checkingURL"></ion-spinner>
+					</i>
+  					<i class="icon ion-checkmark-circled balanced"
+  							ng-show="data.validURL"></i>
+  					<i class="icon ion-close-circled assertive"
+  							ng-show="data.validURL === false"></i>
+				</div>
+			</div>
 
 			<div class="item button-bar">
 				<button class="button button-positive"

@@ -40,7 +40,7 @@ angular.module('myApp')
 
 })
 
-.controller('SettingsController', function($scope, $ionicModal, $ionicPopup, CameraService) {
+.controller('SettingsController', function($scope, $ionicModal, $ionicPopup, CameraService, CameraDatabase) {
     $scope.cameras = CameraService.read();
 
     var newCamera;
@@ -88,8 +88,6 @@ angular.module('myApp')
     }
 
     $scope.deleteCamera = function() {
-        console.log(newCamera);
-        console.log($scope.data);
         if (!newCamera && $scope.data) {
             CameraService.deleteCamera($scope.data);
         }
@@ -97,8 +95,29 @@ angular.module('myApp')
         $scope.closeModal();
     }
 
+    $scope.testCamera = function() {
+        var camera = $scope.data;
+        var success = function() {
+            $scope.data.validURL = true;
+            $scope.checkingURL = false;
+        }
+        var failure = function() {
+            $scope.data.validURL = false;
+            $scope.checkingURL = false;
+        }
+        if (camera) {
+            $scope.checkingURL = true;
+            CameraService.testCameraConnection(camera, success, failure);
+        }
+    }
+
     $scope.isEditing = function() {
         return !newCamera;
+    }
+
+    $scope.getCameraManf = CameraDatabase.getAllManf();
+    $scope.getCameraModel = function(manf) {
+        return CameraDatabase.getModelByManf(manf);
     }
 
     //Cleanup the modal when done

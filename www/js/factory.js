@@ -1,6 +1,6 @@
 angular.module('myApp')
 
-.factory('CameraService', function($window) {
+.factory('CameraService', function($window, $q, CameraDatabase) {
     var cameras = {}
 
     var write = function () {
@@ -16,23 +16,17 @@ angular.module('myApp')
     {
         if (!camera) return null
         if (camera.use_custom && camera.custom_url) return camera.custom_url;
-        if (camera.manf === "Generic" || camera.custom_url)
-            return camera.custom_url;
-        if (camera.manf === "Foscam") 
-            return "http://" + camera.host + ":" + camera.port +
-                "/snapshot.cgi?user=" + camera.user +
-                "&pwd=" + camera.pwd;        
+        pattern = CameraDatabase.getUrlPattern(camera.manf, camera.model, camera.user, camera.pwd);
+        return "http://" + camera.host + ":" + camera.port + pattern;
+                
     }
 
     var getAllCamera = function() {
         var allCameras = read();
         allCameras = _.each(allCameras, function(camera) {
-            console.log(camera)
-            console.log(getUrl(camera))
             camera.url = getUrl(camera);
             return camera;
         });
-        console.log(allCameras);
         return allCameras;
     }
 
@@ -64,20 +58,61 @@ angular.module('myApp')
 
     var getNthCamera = function(n) {
         var allKeys = _.keys(cameras) 
-        console.log(allKeys)
         var index = allKeys[n]
-        console.log(index)
         return cameras[index]
     }
 
+    var testCameraConnection = function(camera, success, failure) {
+        var isImage = function(src) {
+            var deferred = $q.defer();
+            var image = new Image();
+            image.onerror = function() {
+                deferred.resolve(false);
+            };
+            image.onload = function() {
+                deferred.resolve(true);
+            };
+            image.src = src;
+            return deferred.promise;
+        }
+        var url = getUrl(camera)
+        isImage(url).then(success,failure);
+    }
 
     return {
         getAllCamera: getAllCamera,
         getCamera: getNthCamera,
         getCameraUrl: getUrl,
+        testCameraConnection : testCameraConnection,
         insertCamera: insertCamera,
         updateCamera: updateCamera,
         deleteCamera: deleteCamera,
         read: read
     }
+})
+
+.factory('CameraDatabase', function($window) {
+    var cameras = {
+        "Foscam" : {
+            "18905W" : "/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=[USERNAME]&pwd=[PASSWORD]",
+            "18906W" : "/snapshot.jpg?user=[USERNAME]&pwd=[PASSWORD]",
+            "18918W" : "/snapshot.cgi?user=[USERNAME]&pwd=[PASSWORD]"
+        }
+    }
+
+    var getUrlPattern = function(manf, model, user, pass) {
+        model = model || "Generic";  
+        user = user || "";
+        pass = pass || "";   
+        pattern = cameras[manf][model];
+        pattern = pattern.replace("[USERNAME]", user).replace("[PASSWORD]", pass);
+        return pattern;
+    }
+
+    return {
+        getAllManf: function() { return _.keys(cameras) },
+        getModelByManf: function(manf) { return _.keys(cameras[manf]) },
+        getUrlPattern: getUrlPattern
+    }
+
 })
