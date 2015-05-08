@@ -12,6 +12,10 @@ angular.module('myApp')
         return cameras;
     }
 
+    var wipe = function() {
+        $window.localStorage.clear();
+    }
+
     var getUrl = function(camera)
     {
         if (!camera) return null
@@ -87,7 +91,8 @@ angular.module('myApp')
         insertCamera: insertCamera,
         updateCamera: updateCamera,
         deleteCamera: deleteCamera,
-        read: read
+        read: read,
+        wipe: wipe
     }
 })
 
@@ -104,7 +109,7 @@ angular.module('myApp')
         model = model || "Generic";  
         user = user || "";
         pass = pass || "";   
-        pattern = cameras[manf][model];
+        pattern = cameras[manf][model] || "";
         pattern = pattern.replace("[USERNAME]", user).replace("[PASSWORD]", pass);
         return pattern;
     }

@@ -33,19 +33,23 @@ angular.module('myApp', ['ionic'])
     $urlRouterProvider.otherwise("/all");
 })
 
-.run(function($ionicPlatform, CameraService) {
+.run(function($ionicPlatform, $window, CameraService) {
 
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-    
-  });
+    var wipeOnLoad = true;
+
+    $ionicPlatform.ready(function() {
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        if(window.cordova && window.cordova.plugins.Keyboard) {
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        }
+        if(window.StatusBar) {
+            StatusBar.styleDefault();
+        }
+        if(wipeOnLoad) {
+            $window.localStorage.clear();
+        }
+     });
 
   CameraService.read();
 })

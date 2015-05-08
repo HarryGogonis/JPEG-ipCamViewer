@@ -120,6 +120,23 @@ angular.module('myApp')
         return CameraDatabase.getModelByManf(manf);
     }
 
+    $scope.clearAppData = function() {
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Delete All Data',
+            template: 'Are you sure you want delete all app data? This will remove all cameras.',
+            okText: 'Delete', 
+            okType: 'button-assertive'
+        });
+        confirmPopup.then(function(res) {
+            if(res) {
+                CameraService.wipe();
+                $scope.cameras = {};
+            } 
+            else {
+            }
+        });
+    };
+
     //Cleanup the modal when done
     $scope.$on('$destroy', function() {
         $scope.modal.remove();
