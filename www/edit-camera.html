@@ -20,6 +20,7 @@
 			</div>
 
 			<div ng-hide="data.use_custom">
+				
 				<label class="item item-input item-stacked-label">
 					<span class="input-label">Host</span>
 					<input type="text" placeholder="192.168.1.50" ng-model="data.host">
@@ -66,6 +67,16 @@
 					<input type="text" placeholder="http://192.168.1.200:8080/snapshot.cgi?user=admin&password=admin"
 						 ng-model="data.custom_url">
 			</label>
+
+			<div class="item item-toggle" ng-show="data.use_custom">
+				mJPEG URL
+     			<label class="toggle toggle-positive">
+					<input type="checkbox" ng-model="data.mjpg">
+						<div class="track">
+							<div class="handle"></div>
+						</div>
+					</label>
+				</div>	
 
 			<div class="item item-icon-right">
 				<button class="button icon-right button-stable"

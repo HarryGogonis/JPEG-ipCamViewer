@@ -35,7 +35,7 @@ angular.module('myApp', ['ionic'])
 
 .run(function($ionicPlatform, $window, CameraService) {
 
-    var wipeOnLoad = true;
+    var wipeOnLoad = CameraService.isNewAPI();
 
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -47,9 +47,17 @@ angular.module('myApp', ['ionic'])
             StatusBar.styleDefault();
         }
         if(wipeOnLoad) {
-            $window.localStorage.clear();
+            CameraService.wipe();
+            CameraService.seed();
+            $window.localStorage['seed'] = false;
         }
      });
 
   CameraService.read();
 })
+
+.filter('trusted', ['$sce', function ($sce) {
+    return function(url) {
+        return $sce.trustAsResourceUrl(url);
+    };
+}]);

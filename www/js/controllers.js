@@ -24,15 +24,25 @@ angular.module('myApp')
 
 .controller('SingleCameraController', function($scope, $stateParams, $timeout, CameraService) {
  //TODO move to factory
-    $scope.camera  = CameraService.getCamera($stateParams.cam); 
+    var timeout;
     var url =  CameraService.getCameraUrl($scope.camera);
-    $scope.url = url;
+    $scope.camera  = CameraService.getCamera($stateParams.cam); 
+    $scope.url = CameraService.getCameraUrl($scope.camera);
+
+    console.log($scope.url)
 
     $scope.updateUrl = function(){
         $scope.url = url + '&t=' + new Date().getTime();
         timeout = $timeout($scope.updateUrl,1000);
     }
-    var timeout = $timeout($scope.updateUrl,1000);
+
+    if ($scope.camera.jpg) {
+        timeout = $timeout($scope.updateUrl,1000);
+    } else {
+        timeout = $timeout(function() {
+            $scope.url = url;
+        },1000);
+    }
 
     $scope.$on("$destroy", function(event) {
         $timeout.cancel( timeout );
@@ -63,6 +73,7 @@ angular.module('myApp')
             $scope.data = {};
             newCamera = true;
         }
+        $scope.data.mjpg = !$scope.data.jpg;
         $scope.modal.isOpen = true;
         $scope.modal.show();
     };
@@ -75,8 +86,11 @@ angular.module('myApp')
     $scope.saveCamera = function() {
         //TODO check for null values, 
         // Add default camera title
+        $scope.data.jpg = !$scope.data.mjpg;
+
         var camera = $scope.data;
         if (camera) {
+            delete camera.mjpg;
             if (newCamera) {
                 CameraService.insertCamera(camera);
             } else {

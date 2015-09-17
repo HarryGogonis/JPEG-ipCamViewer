@@ -1,6 +1,7 @@
 angular.module('myApp')
 
 .factory('CameraService', function($window, $q, CameraDatabase) {
+    var apiVersion = 5;
     var cameras = {}
 
     var write = function () {
@@ -13,7 +14,27 @@ angular.module('myApp')
     }
 
     var wipe = function() {
+        console.log('wiping storage');
+        cameras = {};
         $window.localStorage.clear();
+        $window.localStorage['seed'] = false;
+    }
+
+    var seed = function() {
+        var s = {
+            custom_url: "http://trackfield.webcam.oregonstate.edu/mjpg/video.mjpg",
+            title: "Example",
+            jpg: false,
+            use_custom: true
+        }
+        insertCamera(s);
+    }
+
+    var isNewAPI = function() {
+        if (!$window.localStorage['api_version']) {
+            $window.localStorage['api_version'] = apiVersion; 
+        }
+        return $window.localStorage['api_version'] != apiVersion;
     }
 
     var getUrl = function(camera)
@@ -36,15 +57,12 @@ angular.module('myApp')
 
     var insertCamera = function(camera) {
         var allKeys = _.keys(cameras) 
-        console.log(allKeys)
         if (allKeys.length > 0) {
             id = parseInt(allKeys[_.size(cameras)-1]) + 1
         }
         else
             id = 0
-        console.log(id)
         cameras[id] = camera
-        console.log(cameras)
         write()
     }
 
@@ -92,6 +110,8 @@ angular.module('myApp')
         updateCamera: updateCamera,
         deleteCamera: deleteCamera,
         read: read,
+        seed: seed,
+        isNewAPI: isNewAPI,
         wipe: wipe
     }
 })
