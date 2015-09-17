@@ -1,7 +1,7 @@
 angular.module('myApp')
 
 .factory('CameraService', function($window, $q, CameraDatabase) {
-    var apiVersion = 5;
+    var apiVersion = 1;
     var cameras = {}
 
     var write = function () {
