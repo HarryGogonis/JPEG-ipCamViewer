@@ -19,6 +19,7 @@
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
   <gap:platform name="android" />
+  <gap:plugin name="com.rjfun.cordova.mobfox" source="plugins.cordova.io"/>
   <platform name="android">
     <preference name="android-targetSdkVersion" value="14" />
   </platform>

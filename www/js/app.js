@@ -51,6 +51,16 @@ angular.module('myApp', ['ionic'])
             CameraService.seed();
             $window.localStorage['seed'] = false;
         }
+        if(window.plugins && window.plugins.MobFox) {
+            var mobfox_key = device.platform == "Android" ?
+                 "fe96717d9875b9da4339ea5367eff1ec" : "fe96717d9875b9da4339ea5367eff1ec";
+            var mobfox = window.plugins.MobFox;
+            mobfox.createBanner( {
+                'adId': admob_key,
+                'position':MobFox.AD_POSITION.BOTTOM_CENTER, 
+                'autoShow': true
+            });
+        }
      });
 
   CameraService.read();
