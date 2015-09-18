@@ -1,7 +1,7 @@
 {
-  "name": "ipcamviewer",
+  "name": "JPEG ipCamViewer",
   "version": "1.0.0",
-  "description": "ipcamviewer: An Ionic project",
+  "description": "A (slightly experimental) app to view ip-based JPEG/mJPEG camera feeds",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^1.3.3",

@@ -2,9 +2,9 @@
 <widget id="me.hgogonis.hgcamview" 
   version="1.0.0" 
   xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>HG IpCam Viewer</name>
+  <name>JPEG ipCamViewer</name>
   <description>
-        An app to view ip-based JPEG/mJPEG camera feeds
+        A (slightly experimental) app to view ip-based JPEG/mJPEG camera feeds
     </description>
   <author email="hgogonis@gmail.com">
       Harry Gogonis
