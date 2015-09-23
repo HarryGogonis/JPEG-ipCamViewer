@@ -33,6 +33,7 @@ angular.module('myApp')
     var isNewAPI = function() {
         if (!$window.localStorage['api_version']) {
             $window.localStorage['api_version'] = apiVersion; 
+            return false;
         }
         return $window.localStorage['api_version'] != apiVersion;
     }
