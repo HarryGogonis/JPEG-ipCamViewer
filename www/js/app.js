@@ -51,15 +51,14 @@ angular.module('myApp', ['ionic'])
             CameraService.seed();
             $window.localStorage['seed'] = false;
         }
-        if(window.plugins && window.plugins.MobFox) {
-            var mobfox_key = device.platform == "Android" ?
-                 "fe96717d9875b9da4339ea5367eff1ec" : "fe96717d9875b9da4339ea5367eff1ec";
-            var mobfox = window.plugins.MobFox;
-            mobfox.createBanner( {
-                'adId': admob_key,
-                'position':MobFox.AD_POSITION.BOTTOM_CENTER,
-                'autoShow': true
-            });
+        if(window.plugins && window.plugins.AdMob) {
+            var admob_key = device.platform == "Android" ? "ca-app-pub-1821431248685576/5644550844" : "IOS_PUBLISHER_KEY";
+            var admob = window.plugins.AdMob;
+            admob.createBanner({
+                'publisherId': admob_key,
+                'position' : AdMob.AD_POSITION.BOTTOM_CENTER,
+                'autoShow' : true
+            }); 
         }
      });
 

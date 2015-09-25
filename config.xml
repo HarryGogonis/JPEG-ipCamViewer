@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="me.hgogonis.hgcamview" 
   version="1.0.0" 
-  xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>JPEG ipCamViewer</name>
+  xmlns="http://www.w3.org/ns/widgets"
+  xmlns:cdv="http://cordova.apache.org/ns/1.0"
+  xmlns:gap="http://phonegap.com/ns/1.0">
+  <name>JPEG IP Camera Viewer</name>
   <description>
         A (slightly experimental) app to view ip-based JPEG/mJPEG camera feeds
     </description>
@@ -22,4 +24,5 @@
   <platform name="android">
     <preference name="android-targetSdkVersion" value="14" />
   </platform>
+  <gap:plugin name="com.google.cordova.admob" source="plugins.cordova.io" />
 </widget>
