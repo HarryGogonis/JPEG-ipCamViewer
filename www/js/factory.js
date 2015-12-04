@@ -3,6 +3,7 @@ angular.module('myApp')
 .factory('CameraService', function($window, $q, CameraDatabase) {
     var apiVersion = 1;
     var cameras = {}
+    var enabled = true;
 
     var write = function () {
         $window.localStorage['cameras'] = JSON.stringify(cameras);
@@ -40,11 +41,20 @@ angular.module('myApp')
 
     var getUrl = function(camera)
     {
-        if (!camera) return null
+        if (!camera) return null;
+        if (!enabled) return '';
         if (camera.use_custom && camera.custom_url) return camera.custom_url;
         pattern = CameraDatabase.getUrlPattern(camera.manf, camera.model, camera.user, camera.pwd);
         return "http://" + camera.host + ":" + camera.port + pattern;
                 
+    }
+
+    var disable = function() {
+      enabled = false;
+    }
+
+    var enable = function() {
+      enabled = true;
     }
 
     var getAllCamera = function() {
@@ -113,7 +123,9 @@ angular.module('myApp')
         read: read,
         seed: seed,
         isNewAPI: isNewAPI,
-        wipe: wipe
+        wipe: wipe,
+        enable,
+        disable
     }
 })
 

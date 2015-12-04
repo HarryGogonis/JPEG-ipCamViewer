@@ -33,7 +33,7 @@ angular.module('myApp', ['ionic'])
     $urlRouterProvider.otherwise("/all");
 })
 
-.run(function($ionicPlatform, $window, CameraService) {
+.run(function($ionicPlatform, $window, $state, $rootScope, CameraService) {
 
     var wipeOnLoad = CameraService.isNewAPI();
 
@@ -60,13 +60,23 @@ angular.module('myApp', ['ionic'])
                 'autoShow' : true
             }); 
         }
+        document.addEventListener("resume", function() {
+            $state.go('all');
+            $rootScope.$broadcast('onResume');
+        }, false);
+
+        document.addEventListener("pause", function() {
+            $state.go('all');
+            $rootScope.$broadcast('onPause');
+
+        }, false);
+
+        CameraService.read();
      });
+  })
 
-  CameraService.read();
-})
-
-.filter('trusted', ['$sce', function ($sce) {
-    return function(url) {
-        return $sce.trustAsResourceUrl(url);
-    };
-}]);
+  .filter('trusted', ['$sce', function ($sce) {
+      return function(url) {
+          return $sce.trustAsResourceUrl(url);
+      };
+  }]);

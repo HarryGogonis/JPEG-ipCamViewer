@@ -1,5 +1,5 @@
 angular.module('myApp')
-.controller('AllCameraController', function($scope, $state, $timeout, CameraService) {
+.controller('AllCameraController', function($scope, $rootScope, $state, $timeout, CameraService) {
     //TODO move to factory
     $scope.cameras = CameraService.getAllCamera();
     $scope.getCameraUrl = CameraService.getCameraUrl;
@@ -12,14 +12,17 @@ angular.module('myApp')
     // Reload the image on all cameras
     $scope.reload = function()
     {   
-        $timeout.cancel();
-        $timeout(function(){
-            //$scope.cameras = CameraService.cameras;
-            $scope.getCameraUrl = function(camera) {
-                return CameraService.getCameraUrl(camera) + '&t=' + new Date().getTime();
-            };
-        });
+      $scope.cameras = CameraService.getAllCamera();
     };
+
+    $scope.$on('onResume', function() {
+      CameraService.enable();
+      $scope.reload();
+    });
+    $scope.$on('onPause', function() {
+      CameraService.disable();
+      $scope.reload();
+    });
 })
 
 .controller('SingleCameraController', function($scope, $stateParams, $timeout, CameraService) {
