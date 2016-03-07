@@ -1,6 +1,8 @@
 # JICV
 JPEG IP Camera Viewer
 
+![Header](http://hgogonis.me/assets/camview.png)
+
 An android app to view JPEG-based IP Camera feeds
 
 # Download
